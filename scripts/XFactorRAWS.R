@@ -44,7 +44,7 @@ use_ring_for_H          <- FALSE
 ring_width_m            <- 100
 
 # Clearing sizes (acres) to evaluate
-clearing_acres <- c(0.1, 2, 10, 40, 100)
+clearing_acres <- c(0.1, 2, 10, 20)
 
 # Outputs
 out_csv_results <- "data/RAWS_EVH_summary.csv"

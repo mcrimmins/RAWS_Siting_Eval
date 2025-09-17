@@ -37,11 +37,11 @@ col_lon_candidates          <- c("lon", "longitude", "LON", "Longitude")
 station_names <- c("RINCON","JETTE")
 
 # Clearing sizes (acres) and map frame
-clearing_acres <- c(0.1, 2, 10)
+clearing_acres <- c(0.1, 2, 10, 20)
 margin_m <- 100  # extra padding around largest buffer for map frame (m)
 
 # “Clear” definition & X-factor settings (align w/ analysis script)
-clear_height_m       <- 2 # vegetation height threshold for “open” (m)
+clear_height_m       <- 1 # vegetation height threshold for “open” (m)
 clear_pct_required   <- 0.95
 treat_nonveg_as_zero <- TRUE
 H_stat               <- "p95"     # "p95", "max", "mean", "median"
