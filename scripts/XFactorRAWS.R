@@ -44,7 +44,9 @@ use_ring_for_H          <- FALSE
 ring_width_m            <- 100
 
 # Clearing sizes (acres) to evaluate
-clearing_acres <- c(0.1, 2, 10, 20)
+#clearing_acres <- c(0.1, 2, 10, 20)
+clearing_acres <- c(0.1, 0.25, 0.5, 1, 2, 4, 6, 8, 10, 15, 20)
+
 
 # Outputs
 out_csv_results <- "data/RAWS_EVH_summary.csv"
@@ -282,6 +284,30 @@ results <- purrr::map_dfr(seq_len(nrow(sv_5070)), function(i) {
     select(station_id, station_name, lat, lon, x_5070, y_5070, everything())
   
 })
+
+# ---------------- X-FACTOR STATS BY STATION ----------------
+xfactor_stats_by_station <- results %>%
+  group_by(station_id, station_name, lat, lon) %>%
+  summarise(
+    n_sizes = sum(!is.na(X_factor)),
+    X_mean  = if (n_sizes > 0) mean(X_factor, na.rm = TRUE)  else NA_real_,
+    X_median= if (n_sizes > 0) median(X_factor, na.rm = TRUE) else NA_real_,
+    X_min   = if (n_sizes > 0) min(X_factor, na.rm = TRUE)    else NA_real_,
+    X_max   = if (n_sizes > 0) max(X_factor, na.rm = TRUE)    else NA_real_,
+    .groups = "drop"
+  )
+
+# Save + preview
+out_csv_xstats <- "data/RAWS_Xfactor_station_stats.csv"
+readr::write_csv(xfactor_stats_by_station, out_csv_xstats)
+message("Wrote: ", out_csv_xstats)
+
+print(
+  xfactor_stats_by_station %>%
+    arrange(desc(X_mean)) %>%
+    slice_head(n = 10)
+)
+
 
 # ---------------- SAVE & SUMMARIES ----------------
 readr::write_csv(results, out_csv_results)
